@@ -1,6 +1,5 @@
 <script lang="ts">
   import Container from "../Container.svelte";
-  import categoriesJson from "../../utils/categories.json";
   import WaveSvg from "./WaveSvg.svelte";
   import Space from "../Space.svelte";
   import CalendarIcon from "../icons/CalendarIcon.svelte";
@@ -15,10 +14,10 @@
       <img src={post.featured_media} alt={post.title} loading="lazy" />
     </div>
     <div class="post-hero__content">
-      <!-- <p class="post-hero__content__category">
-        {categories[categoryId]?.name}
-      </p> -->
-      <h1>
+      <p class="post-hero__content__category text-secondary">
+        {post.categoryName}
+      </p>
+      <h1 class="mb-20 text-7xl">
         {@html post.title}
       </h1>
       <p class="post-hero__content__author">
@@ -98,12 +97,6 @@
         margin-bottom: 8px;
       } */
 
-      h1 {
-        font-size: 3.2rem;
-        margin-top: 1.6rem;
-        margin-bottom: 2.4rem;
-      }
-
       &__author {
         margin-bottom: 20px;
       }
@@ -116,7 +109,6 @@
       &__length {
         font-size: 1.8rem;
         color: var(--text-grey);
-        margin-bottom: 8px;
 
         @media screen and (min-width: 768px) {
           margin-bottom: 0;

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import PostsContainer from "../../../components/PostsContainer.svelte";
+  import PostsContainer from "src/components/PostsContainer.svelte";
 
   export let data: any;
 

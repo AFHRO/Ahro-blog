@@ -2,8 +2,6 @@
   import { fade } from "svelte/transition";
   import type { Post } from "../types/posts";
   import htmlCodeToSymbol from "../utils/htmlCodeToSymbol";
-  import { onMount } from "svelte";
-  import getRichTextString from "src/utils/getRichTextString";
   import routePaths from "src/utils/routePaths";
 
   export let post: Post;

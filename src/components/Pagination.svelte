@@ -1,14 +1,49 @@
 <script lang="ts">
   import { afterNavigate } from "$app/navigation";
   import { page } from "$app/stores";
+  import routePaths from "src/utils/routePaths";
 
   import ChevronLeft from "./icons/ChevronLeft.svelte";
   import ChevronRight from "./icons/ChevronRight.svelte";
   let currentPageVal: string | number | null = "1";
 
   export let currentPage: number | string = 1;
+
+  export let category: string | undefined;
+
   const searchText = $page.url.searchParams.get("search");
+
+  export let totalCount: number = 9;
+
+  const totalPages = Math.ceil(totalCount / 9);
+
+  const getPageNumbers = () => {
+    const curr = Number(currentPage);
+    const pageRange = 2; // Number of page numbers to display on each side of the current page
+    const pageNumbers = [];
+    let startPage = Math.max(1, curr - pageRange);
+    let endPage = Math.min(totalPages, curr + pageRange);
+
+    if (curr - startPage < pageRange) {
+      endPage = Math.min(
+        endPage + (pageRange - (curr - startPage)),
+        totalPages
+      );
+    }
+
+    if (endPage - curr < pageRange) {
+      startPage = Math.max(startPage - (pageRange - (endPage - curr)), 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return pageNumbers;
+  };
+
   const getUrl = (currentPage: number) => {
+    if (category) return `/category/${category}?page=${currentPage}`;
     if (searchText) return `/search?search=${searchText}&page=${currentPage}`;
     return `/page/${currentPage}`;
   };
@@ -17,23 +52,10 @@
     ? $page.url.searchParams.get("page") || "1"
     : currentPage;
 
-  afterNavigate(() => {
-    currentPageVal = currentPage;
-  });
-
-  let numbers = [1, 2, 3, 4, 5];
-  if (Number(currentPageVal) > 3) {
-    numbers = [
-      Number(currentPageVal) - 2,
-      Number(currentPageVal) - 1,
-      Number(currentPageVal),
-      Number(currentPageVal) + 1,
-      Number(currentPageVal) + 2,
-    ];
-  }
+  let numbers = getPageNumbers();
 </script>
 
-<div>
+<div class="flex justify-center my-20 text-3xl">
   {#if Number(currentPageVal) > 1}
     <a
       href={getUrl(Number(currentPageVal) - 1)}
@@ -48,21 +70,28 @@
   {#each numbers as page}
     <a
       class={page === Number(currentPageVal) ? "active" : ""}
+      class:font-bold={page === Number(currentPageVal)}
+      class:text-4xl={page === Number(currentPageVal)}
       href={getUrl(page)}
+      aria-label={`Go to page ${page}`}
     >
       <button>{page}</button></a
     >
   {/each}
-
-  <a
-    href={getUrl(Number(currentPageVal || 0) + 1)}
-    class="btn-dir"
-    aria-label="Go to next page"
-  >
-    <button aria-label="Next" disabled={Number(currentPageVal) === 5}
-      ><ChevronRight /></button
+  {#if Number(currentPageVal) < totalPages}
+    <a
+      href={getUrl(Number(currentPageVal || 0) + 1)}
+      class="btn-dir"
+      aria-label="Go to next page"
     >
-  </a>
+      <button
+        aria-label="Next"
+        disabled={Number(currentPageVal) === totalPages}
+      >
+        <ChevronRight /></button
+      >
+    </a>
+  {/if}
 </div>
 
 <style lang="scss">
@@ -79,7 +108,6 @@
     vertical-align: middle;
     white-space: nowrap;
     user-select: none;
-    font-size: 18px;
     color: var(--text-black);
     background: none;
     outline: none;
@@ -105,7 +133,6 @@
     cursor: pointer;
 
     button {
-      font-size: 1rem;
       display: flex;
     }
   }
