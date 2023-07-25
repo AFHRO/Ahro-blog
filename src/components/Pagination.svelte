@@ -9,9 +9,8 @@
   export let currentPage: number | string = 1;
   const searchText = $page.url.searchParams.get("search");
   const getUrl = (currentPage: number) => {
-    if (searchText)
-      return `/blog/search?search=${searchText}&page=${currentPage}`;
-    return `/blog/page/${currentPage}`;
+    if (searchText) return `/search?search=${searchText}&page=${currentPage}`;
+    return `/page/${currentPage}`;
   };
 
   $: currentPageVal = searchText

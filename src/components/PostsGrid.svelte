@@ -9,8 +9,6 @@
   export let currentPage: number | string = 1;
 </script>
 
-<title>Blog</title>
-
 {#if loading}
   <PostsLoading />
 {:else if !posts.length}

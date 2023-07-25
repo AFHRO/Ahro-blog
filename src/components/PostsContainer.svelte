@@ -26,7 +26,7 @@
     on:submit|preventDefault={(e) => {
       e.preventDefault();
 
-      goto(`/blog/search?search=${searchTextValue}`, {
+      goto(`/search?search=${searchTextValue}`, {
         replaceState: true,
       });
     }}

@@ -46,7 +46,7 @@
           <div
             class="ml-2 text-[1.4rem] md:text-[1.7rem] font-bold w-[20rem] md:w-[25rem]"
           >
-            AFRICA HEALTH RESEARCH ORGANISATION
+            AHRO Blog
           </div>
         </a>
 

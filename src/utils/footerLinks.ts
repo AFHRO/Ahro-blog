@@ -16,10 +16,6 @@ export default [
         url: "/",
       },
       {
-        title: "Blog",
-        url: "/blog",
-      },
-      {
         title: "Feedback and Appeals",
         url: "/",
       },

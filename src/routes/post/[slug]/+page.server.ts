@@ -1,7 +1,17 @@
 import { PUBLIC_BREVO_API_KEY, PUBLIC_BREVO_BLOG_LIST_ID } from '$env/static/public';
-import type { Actions } from '@sveltejs/kit';
+import { error, type Actions } from '@sveltejs/kit';
+import fetchPostBySlug from 'src/utils/fetchPostBySlug.js';
 
 
+export const load = async ({ params }) => {
+    const post = await fetchPostBySlug(params.slug);
+  
+    if(!post) {
+      throw error(404, 'Post not found');
+    }
+  
+    return post;
+  };
 
 export const actions:Actions = {
     default: async ({ request }) => {
@@ -20,10 +30,9 @@ export const actions:Actions = {
                 },
                 body: JSON.stringify({
                     email,
-                    listIds: [PUBLIC_BREVO_BLOG_LIST_ID]
+                    listIds: [Number(PUBLIC_BREVO_BLOG_LIST_ID)]
                 })
             });
-
 
             if ([200,201].includes(res.status)) {
                 return {
@@ -32,7 +41,7 @@ export const actions:Actions = {
             }
         } catch (e) {
             return {
-                subsribed: false
+                subsribed: false,
             }
 
         }

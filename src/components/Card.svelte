@@ -4,6 +4,7 @@
   import htmlCodeToSymbol from "../utils/htmlCodeToSymbol";
   import { onMount } from "svelte";
   import getRichTextString from "src/utils/getRichTextString";
+  import routePaths from "src/utils/routePaths";
 
   export let post: Post;
   export let index: number;
@@ -21,7 +22,7 @@
 
 <a
   class="post-card"
-  href={`/blog/post/${post.slug}`}
+  href={`${routePaths.blogPost}/${post.slug}`}
   in:fade={{ delay: (index + 1) * 300 }}
   aria-label={post.title}
 >
