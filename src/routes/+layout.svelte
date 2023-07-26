@@ -3,35 +3,22 @@
   import "../app.css";
 
   import GlobalFooter from "src/components/GlobalFooter.svelte";
-  import MobileNav from "src/components/MobileNav.svelte";
 
-  import GlobalHeader from "src/components/GlobalHeader.svelte";
   import GTagManagerScript from "src/components/GTagManagerScript.svelte";
-  import { page } from "$app/stores";
-  import routePaths from "src/utils/routePaths";
+  import Header from "src/components/Header.svelte";
+  import { fade } from "svelte/transition";
 
-  let showMenu = false;
+  export let data: any;
 
-  function toggleMenu() {
-    showMenu = !showMenu;
-  }
-  let scrollY: any = null;
-
-  $: hasScrolledDown =
-    typeof scrollY === "number" ? Number(scrollY) > 80 : null;
-
-  $: isBlog = $page.url.pathname.includes(routePaths.blog);
+  const { categories } = data || {};
 </script>
 
 <GTagManagerScript />
 
-<svelte:window bind:scrollY />
-
-{#if !isBlog}
-  <GlobalHeader {hasScrolledDown} {showMenu} {toggleMenu} />
-  <MobileNav {showMenu} />
-{/if}
-<slot class="main min-h-[60vh]" />
+<Header {categories} />
+<main class="main-wrapper min-h-[70vh] py-20" in:fade={{ delay: 0 }}>
+  <slot />
+</main>
 <GlobalFooter />
 
 <style lang="scss">
@@ -64,5 +51,9 @@
     line-height: 1.5;
     color: var(--text-black);
     background-color: var(--primary-background-color);
+  }
+
+  .main-wrapper {
+    padding-top: 100px;
   }
 </style>
